@@ -7,7 +7,7 @@
 portToCheck = ARGV[0]
 
 if portToCheck == nil
-	print "What is th debug port? "
+	print "What is the debug port? "
 	portToCheck = gets.chomp
 end
 sbtLines = IO.readlines("./sbt")
