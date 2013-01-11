@@ -1,4 +1,7 @@
 # use glob syntax.
+#OSX
+.DS_STORE
+
 syntax: glob
 
 # misc files
