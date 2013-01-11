@@ -1,1 +1,1 @@
-ruby ${RUBY_SCRIPTS}/dsbt.rb
+ruby ${RUBY_SCRIPTS}/dsbt.rb $1
