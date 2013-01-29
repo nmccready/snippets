@@ -1,0 +1,2 @@
+#create ./data/db for mongo to put data prior to running!
+./bin/mongod --dbpath=./data/db --smallfiles
