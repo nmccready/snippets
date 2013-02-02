@@ -1,7 +1,4 @@
 # use glob syntax.
-#OSX
-.DS_STORE
-
 syntax: glob
 
 # misc files
@@ -26,6 +23,17 @@ project/project
 .idea
 atlassian-ide-plugin.xml
 
+#dump rdb
+*.rdb
 
-# vim
+#OSX
+.DS_STORE 
+
+#Sublime
+.sublime*
+
+#unix swap/ backups
 *.swp
+
+#dia swp
+*.dia~
