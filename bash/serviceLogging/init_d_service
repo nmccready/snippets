@@ -14,28 +14,28 @@ USER="$APP"
 # Source function library.
 . /etc/init.d/functions
 # override function library
-logTo="$OPTDIR/$APP".log
+logTo="$OPTDIR/$APP/$APP".log
 echo Logging will be at "$logTo"
 . /etc/init.d/override_functions  "$logTo"
 
-PROC=`ps aux | grep java_mock`
+PROC="java_mock"
 PROG="dummy_service"
 PID_PATH="/opt/$APP/RUNNING_PID"
 INIT_D="/etc/init.d/$APP"
 SERVICE_CMD="service $APP"
-pidCMD="ps aux | grep $APP | grep -v grep | grep -v \"$INIT_D\" | grep -v \"$SERVICE_CMD\" | awk '{print \$2}'"
-pidALLCMD="ps aux | grep $APP | grep -v grep | grep -v \"$INIT_D\" | grep -v \"$SERVICE_CMD\""
+pidCMD="ps aux | grep $PROC | grep $APP | grep -v grep | grep -v \"$INIT_D\" | grep -v \"$SERVICE_CMD\" | awk '{print \$2}'"
+#pidALLCMD="ps aux | grep $APP | grep -v grep | grep -v \"$INIT_D\" | grep -v \"$SERVICE_CMD\""
 echo
 #echo "pidLookUp  cmd is:" "$pidCMD"
 #use eval to evaluate pipes as variables see url below
 #http://stackoverflow.com/questions/11596606/executing-a-variable-with-a-pipe-in-shell
 PID=`eval $pidCMD`
-echo `eval $pidALLCMD`
+#echo `eval $pidALLCMD`
 
 NOW=`date +"%m-%d-%Y-%H-%M-%S"`
 
 fail_if_proc_is_running(){
-        if [ ! -z "$PID" ];  then
+        if [[ "$PID" != "" ]];  then
           failure
           echo
           RUNNING_PID=$PID
@@ -45,7 +45,7 @@ fail_if_proc_is_running(){
 }
 
 fail_if_proc_is_not_running(){
-        if [ -z  "$PID" ];  then
+        if [[ "$PID" == "" ]];  then
           failure
           echo
           echo "Warning:  Process was not running!"
@@ -69,7 +69,7 @@ startstatus()
         if [ -f "$PID_PATH" ];  then
           success
           RETVAL=0
-       else
+        else
           failure
           RETVAL=1
         fi
