@@ -1,0 +1,12 @@
+#!/bin/sh
+echo Running PID $$ 
+echo $$ >> ./RUNNING_PID 2>&1 &
+
+trap "{ echo Dying.... ; rm -f ./RUNNING_PID ; exit 0; }" EXIT
+
+while true; do
+ echo Hi im Running!!
+ sleep 1
+done
+
+exit 0

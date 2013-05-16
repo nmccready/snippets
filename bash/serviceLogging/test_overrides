@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#import etc functions
+. /etc/init.d/functions
+
+#import our functions , should override etc's
+. /override_functions ./test_overrides.log
+
+#enter 1 or whatever or none to test success failure function override and log
+#files should be logged (to ./test_overrides.log) with on colorization and date mixing problems
+if [ $1 == 1 ]; then
+  success
+else
+  failure
+fi
+
+#test normal echos
+echo Holla back! sweet!!!!!!
+echo WOWZA!

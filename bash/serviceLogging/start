@@ -1,0 +1,3 @@
+#!/bin/sh
+./java_mock &
+exit 0

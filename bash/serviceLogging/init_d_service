@@ -1,0 +1,152 @@
+#!/bin/sh
+#
+# init_d_logg_service Startup script for init_d_logg_service
+#
+# chkconfig: - 85 15
+# description: dummy_service
+# processname: dummy_service
+
+
+OPTDIR="/opt"
+APP="dummy_service"
+APPDIR="$OPTDIR"/"$APP"
+USER=testUser
+# Source function library.
+. /etc/init.d/functions
+# override function library
+. /etc/override_functions "$OPTDIR"/"$APP".log
+
+PROC=`ps aux | grep java_mock`
+PROG="dummy_service"
+PID_PATH="/opt/dummy_service/RUNNING_PID"
+INIT_D='/etc/init.d/'"$APP"
+SERVICE_CMD='service '"$APP"
+PID=$(ps aux | grep "$APP" | grep -v grep | grep -v "$INIT_D" | grep -v "$SERVICE_CMD" | awk '{print $2}')
+
+NOW=`date +"%m-%d-%Y-%H-%M-%S"`
+
+fail_if_proc_is_running(){
+        if [ ! -z "$PID" ];  then
+          failure
+          echo
+          RUNNING_PID=$PID
+          echo "Warning: Process is already running, pid: $RUNNING_PID"
+          exit 0;
+        fi
+}
+
+fail_if_proc_is_not_running(){
+        if [ -z  "$PID" ];  then
+          failure
+          echo
+          echo "Warning:  Process was not running!"
+          RET=0
+        else
+          RET=1
+        fi
+        return $RET
+}
+
+startstatus()
+{
+        echo -n "Starting $PROG: "
+        fail_if_proc_is_running
+        cd $APPDIR
+    daemon --user=$USER --pidfile=$PID_PATH "./start 2>&1 &"
+    echo
+        echo -n "Please wait 2 seconds.....  "
+        sleep 2
+        echo -n "$PROG status: "
+        if [ -f "$PID_PATH" ];  then
+          success
+          RETVAL=0
+       else
+          failure
+          RETVAL=1
+        fi
+}
+start(){
+        deploy
+        startstatus
+        if [ "$RETVAL" == 0 ];  then
+          echo "Successful start"
+          success
+          RETVAL=0
+        else
+        rollback
+        echo
+        echo
+    startstatus
+        echo
+        fi
+        echo
+    return $RETVAL
+}
+stop()
+{
+        echo -n "Stopping "$PROG": "
+        fail_if_proc_is_not_running
+        if [ -n "$PID" ];  then
+            kill $PID  && success || failure
+            echo
+            RETVAL=$?
+        fi
+        #rm -f $PID_PATH not needed on normal stop scala/java code should remove pid on graceful shutdown
+        echo
+        return $RETVAL
+}
+
+halt()
+{
+        echo -n "Killing $PROG: "
+        fail_if_proc_is_not_running
+        if [ -n "$PID" ];  then
+          kill -9 $PID && success || failure
+          echo
+        RETVAL=$?
+        fi
+        rm -f $PID_PATH #dirty shudown removal required
+        echo
+        return $RETVAL
+}
+
+status()
+{
+        if [ -n "$PID" ];  then
+          echo " $PROG  is running," 
+        RUNNING_PID=$PID  
+        echo "pid: $RUNNING_PID"
+          echo 
+        else
+          echo " $PROG is not running"
+        fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    halt)
+        halt
+        ;;
+    status)
+        status
+        ;;
+    restart)
+        "$INIT_D" stop
+        echo "Please wait, restarting"
+        sleep 12
+        echo
+        "$INIT_D" start
+        ;;
+    startstatus)
+    startstatus
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|halt|status}"
+        RETVAL=1
+esac
+exit $RETVAL

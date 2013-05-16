@@ -1,0 +1,3 @@
+du -sh /var/lib/mongo/journal/*
+
+#should show space usage size immediate sub directories

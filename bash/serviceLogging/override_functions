@@ -1,0 +1,32 @@
+#!/bin/sh
+logLocation=${1?missing logg location}
+
+successVar="-ne \t\t\t\t\t[ \033[32mOK\033[0m ]\n"
+failureVar="-ne \t\t\t\t\t[ \033[31mFailed\033[0m ]\n"
+function success(){
+  echo $successVar
+}
+function failure(){
+  echo $failureVar
+}
+function std_echo(){
+  /bin/echo $*
+}
+function logg_echo(){
+  /bin/echo `date` : -  $* >> "$logLocation" 2>&1 & 
+}
+function echo(){
+  #log  & echo at the same time
+  all=$*
+  if [[ "$all" == "$successVar"  ]]; then
+    loggOnly="[ Ok ]"
+  elif [[ "$all" == "$failureVar"  ]]; then
+    loggOnly="[ Failed ]"
+  else
+    loggOnly="$all"
+  fi
+  std_echo `date`
+  std_echo ${all}
+  logg_echo ${loggOnly}  
+
+}

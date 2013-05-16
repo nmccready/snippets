@@ -28,7 +28,7 @@ atlassian-ide-plugin.xml
 
 #OSX
 .DS_STORE 
-
+*.DS_STORE
 #Sublime
 .sublime*
 
@@ -37,3 +37,6 @@ atlassian-ide-plugin.xml
 
 #dia swp
 *.dia~
+
+#test area not under scc
+.test*
