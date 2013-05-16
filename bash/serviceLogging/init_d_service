@@ -24,8 +24,9 @@ PID_PATH="/opt/$APP/RUNNING_PID"
 INIT_D="/etc/init.d/$APP"
 SERVICE_CMD="service $APP"
 pidCMD="ps aux | grep $APP | grep -v grep | grep -v $INIT_D | grep -v $SERVICE_CMD | awk '{print $2}'"
+echo
 echo "pidLookUp  cmd is:" "$pidCMD"
-PID=$(pidCMd)
+PID=$(pidCMD)
 
 NOW=`date +"%m-%d-%Y-%H-%M-%S"`
 
@@ -70,18 +71,15 @@ startstatus()
         fi
 }
 start(){
-        deploy
         startstatus
         if [ "$RETVAL" == 0 ];  then
           echo "Successful start"
           success
           RETVAL=0
         else
-        rollback
-        echo
-        echo
-    startstatus
-        echo
+            echo
+            startstatus
+            echo
         fi
         echo
     return $RETVAL
@@ -117,12 +115,12 @@ halt()
 status()
 {
         if [ -n "$PID" ];  then
-          echo " $PROG  is running," 
-        RUNNING_PID=$PID  
-        echo "pid: $RUNNING_PID"
-          echo 
+            echo " $PROG  is running," 
+            RUNNING_PID=$PID  
+            echo "pid: $RUNNING_PID"
+            echo 
         else
-          echo " $PROG is not running"
+            echo " $PROG is not running"
         fi
 }
 
