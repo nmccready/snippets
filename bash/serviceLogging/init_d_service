@@ -18,9 +18,9 @@ USER=testUser
 
 PROC=`ps aux | grep java_mock`
 PROG="dummy_service"
-PID_PATH="/opt/dummy_service/RUNNING_PID"
-INIT_D='/etc/init.d/'"$APP"
-SERVICE_CMD='service '"$APP"
+PID_PATH="/opt/$APP/RUNNING_PID"
+INIT_D="/etc/init.d/$APP"
+SERVICE_CMD="service $APP"
 PID=$(ps aux | grep "$APP" | grep -v grep | grep -v "$INIT_D" | grep -v "$SERVICE_CMD" | awk '{print $2}')
 
 NOW=`date +"%m-%d-%Y-%H-%M-%S"`
@@ -52,8 +52,8 @@ startstatus()
         echo -n "Starting $PROG: "
         fail_if_proc_is_running
         cd $APPDIR
-    daemon --user=$USER --pidfile=$PID_PATH "./start 2>&1 &"
-    echo
+        daemon --user=$USER --pidfile=$PID_PATH "./start 2>&1 &"
+        echo
         echo -n "Please wait 2 seconds.....  "
         sleep 2
         echo -n "$PROG status: "
