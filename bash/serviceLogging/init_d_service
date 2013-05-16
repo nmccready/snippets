@@ -23,7 +23,7 @@ PROG="dummy_service"
 PID_PATH="/opt/$APP/RUNNING_PID"
 INIT_D="/etc/init.d/$APP"
 SERVICE_CMD="service $APP"
-pidCMD="ps aux | grep $PROC | grep $APP | grep -v grep | grep -v \"$INIT_D\" | grep -v \"$SERVICE_CMD\" | awk '{print \$2}'"
+pidCMD="pgrep -u $USER $PROC"
 #pidALLCMD="ps aux | grep $APP | grep -v grep | grep -v \"$INIT_D\" | grep -v \"$SERVICE_CMD\""
 echo
 #echo "pidLookUp  cmd is:" "$pidCMD"
