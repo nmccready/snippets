@@ -34,8 +34,7 @@ function echo(){
   else
     loggOnly="$all"
   fi
-  std_echo `date`
+  
   std_echo ${all}
   logg_echo ${loggOnly}  
-
 }
