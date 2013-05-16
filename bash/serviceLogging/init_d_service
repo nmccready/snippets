@@ -10,7 +10,7 @@
 OPTDIR="/opt"
 APP="dummy_service"
 APPDIR="$OPTDIR"/"$APP"
-USER=testUser
+USER="$APP"
 # Source function library.
 . /etc/init.d/functions
 # override function library
