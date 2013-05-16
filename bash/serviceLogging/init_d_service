@@ -21,7 +21,9 @@ PROG="dummy_service"
 PID_PATH="/opt/$APP/RUNNING_PID"
 INIT_D="/etc/init.d/$APP"
 SERVICE_CMD="service $APP"
-PID=$(ps aux | grep "$APP" | grep -v grep | grep -v "$INIT_D" | grep -v "$SERVICE_CMD" | awk '{print $2}')
+pidCMD="ps aux | grep $APP | grep -v grep | grep -v $INIT_D | grep -v $SERVICE_CMD | awk '{print $2}'"
+echo "pidLookUp  cmd is:" "$pidCMD"
+PID=$(pidCMd)
 
 NOW=`date +"%m-%d-%Y-%H-%M-%S"`
 
