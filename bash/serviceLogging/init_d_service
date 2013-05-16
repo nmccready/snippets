@@ -61,7 +61,7 @@ startstatus()
         echo -n "Starting $PROG: "
         fail_if_proc_is_running
         cd $APPDIR
-        daemon --user=$USER --pidfile=$PID_PATH "./start 2>&1 &"
+        daemon --user=$USER --pidfile=$PID_PATH "./start > /dev/null 2>&1 &"
         echo
         echo -n "Please wait 2 seconds.....  "
         sleep 2
