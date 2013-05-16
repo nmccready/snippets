@@ -14,7 +14,7 @@ USER=testUser
 # Source function library.
 . /etc/init.d/functions
 # override function library
-. /etc/override_functions "$OPTDIR"/"$APP".log
+. /etc/init.d/override_functions "$OPTDIR"/"$APP".log
 
 PROC=`ps aux | grep java_mock`
 PROG="dummy_service"
