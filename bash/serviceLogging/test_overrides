@@ -1,10 +1,12 @@
 #!/bin/sh
 
-#import etc functions
-. /etc/init.d/functions
+if [[ `uname` != "Darwin" ]]; then
+	#import etc functions
+	. ./functions
+fi
 
 #import our functions , should override etc's
-. /override_functions ./test_overrides.log
+. ./override_functions ./test_overrides.log
 
 #enter 1 or whatever or none to test success failure function override and log
 #files should be logged (to ./test_overrides.log) with on colorization and date mixing problems

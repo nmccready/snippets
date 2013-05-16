@@ -1,4 +1,5 @@
 #!/bin/sh
+#requires coreutils from brew on OSX!!
 logLocation=${1?missing logg location}
 
 successVar="-ne \t\t\t\t\t[ \033[32mOK\033[0m ]\n"
@@ -10,10 +11,18 @@ function failure(){
   echo $failureVar
 }
 function std_echo(){
-  /bin/echo $*
+  if [[ `uname` == "Darwin" ]]; then
+    /usr/local/bin/gecho $*
+  else
+    /bin/echo $*
+  fi
 }
 function logg_echo(){
-  /bin/echo `date` : -  $* >> "$logLocation" 2>&1 & 
+  if [[ `uname` == "Darwin" ]]; then
+    /usr/local/bin/gecho `date` : -  $* >> "$logLocation" 2>&1 & 
+  else
+    /bin/echo `date` : -  $* >> "$logLocation" 2>&1 & 
+  fi
 }
 function echo(){
   #log  & echo at the same time
