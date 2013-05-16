@@ -1,0 +1,9 @@
+#!/bin/sh
+cp ./init_d_service /etc/init.d/dummy_service
+cp ./override_functions /etc/init.d/.
+
+mkdir -p /opt/dummy_service
+cp ./start /opt/dummy_service
+cp ./java_mock /opt/dummy_service
+
+chown -R dummy_service:dummy_service /opt/dummy_service
