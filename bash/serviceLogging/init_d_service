@@ -26,7 +26,9 @@ SERVICE_CMD="service $APP"
 pidCMD="ps aux | grep $APP | grep -v grep | grep -v \"$INIT_D\" | grep -v \"$SERVICE_CMD\" | awk '{print \$2}'"
 echo
 #echo "pidLookUp  cmd is:" "$pidCMD"
-PID=$("$pidCMD")
+#use eval to evaluate pipes as variables see url below
+#http://stackoverflow.com/questions/11596606/executing-a-variable-with-a-pipe-in-shell
+PID=`eval $pidCMD`
 
 NOW=`date +"%m-%d-%Y-%H-%M-%S"`
 
