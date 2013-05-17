@@ -1,4 +1,6 @@
 #!/bin/sh
+#idea here is to make it easy to log scripts
+#especially for devugging init.d service scripts for at least debugging (not production, but u may want the history)
 #requires coreutils from brew on OSX!!
 logLocation=${1?missing logg location}
 
