@@ -1,0 +1,7 @@
+#run as root, sudo su -
+pythonbrew install 2.7.3
+pythonbrew symlink
+pythonbrew symlink -p 2.7.3
+ln -sF /usr/local/pythonbrew/pythons/Python-2.7.3/bin/* /usr/local/bin/
+pip install locustio
+ln -sF /usr/local/pythonbrew/pythons/Python-2.7.3/bin/* /usr/local/bin/

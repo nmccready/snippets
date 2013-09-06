@@ -1,0 +1,15 @@
+#!/bin/sh
+#installs dependencies to get pip and easyinstall working prior to pythonbrew installing python
+#installs deps for locustio as well.. mainly libevent-devel
+sudo yum -y groupinstall "Additional Development" "Development tools" 
+sudo yum -y install gcc patch zlib-devel bzip2-devel openssl-devel \
+         ncurses-devel sqlite-devel readline-devel tk-devel libevent-devel
+#u may want to disable the iptables off stuff.. this was for inhouse dev
+sudo chkconfig iptables off
+sudo service iptables stop
+#pythonbew install
+#sudo curl https://dl.dropboxusercontent.com/u/10820326/pythonbrewinstall >> ~/pythonbrewinstall
+#sudo chmod +x pythonbrewinstall
+sudo ~/pythonbrewinstall
+sudo echo '[[ -s "/usr/local/pythonbrew/etc/bashrc"  ]] && source "/usr/local/pythonbrew/etc/bashrc"' | sudo tee -a /etc/environment
+#run 
