@@ -1,0 +1,11 @@
+#!/bin/sh
+run=1
+while [ $run ]
+do
+    echo 'Swap Space monitoring forever.'
+    echo '------------------------------'
+    echo ' '
+    echo ' '
+    ls -lh /private/var/vm/swapfile*
+    sleep 2
+done
