@@ -1,0 +1,30 @@
+#!/bin/sh
+#moduleName=${1?need module name}
+
+#TODO read in pom.xml and get the com.newbrananalytics dependencies with 1.0.0 where 1.0.0 is an argument passed in
+#execute from ~/code/github/nba/dashboard2.0
+
+~/bin/killTomcat
+ourDependencies=( "dashboard-properties" "common" "model" "services" "deployment" "workflow" "test-utilities" )
+MY_ORIG_PATH=`pwd`
+MY_PATH="$HOME"/code/github/nba/dashboard2.0
+cd "$MY_PATH"
+BANG="!!!!!!!!!!!!!"
+echo $BANG MY_PATH:"$MY_PATH" $BANG
+#Handle extra replacement
+for i in "${!ourDependencies[@]}"
+do
+    module="${ourDependencies["$i"]}"
+    cd ../"$module"
+    echo "Building dependeny '$module'!"
+	mvn install
+done
+
+echo $BANG "Build at""$MY_PATH" $BANG
+cd "$MY_PATH"
+
+#build dashboard2.0
+mvn package
+
+~/bin/deployDash2
+cd "$MY_ORIG_PATH"
