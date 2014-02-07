@@ -1,0 +1,7 @@
+#!/bin/sh
+rm -rf /Library/Tomcat/webapps/ROOT/*
+CODE_BASE_HOME="$HOME""/code/github/nba"
+cp -R $CODE_BASE_HOME"/dashboard2.0/target/dashboard2.0-1.0.0/" /Library/Tomcat/webapps/ROOT
+
+/Library/Tomcat/bin/startup.sh
+

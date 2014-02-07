@@ -1,0 +1,3 @@
+#!/bin/sh
+extraPath=${1-}
+ls -la "$HOME"/.ivy2/cache/com.newbrandanalytics/"$extraPath"

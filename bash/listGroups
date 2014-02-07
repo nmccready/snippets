@@ -1,0 +1,2 @@
+#!/bin/sh
+dscl . list /groups

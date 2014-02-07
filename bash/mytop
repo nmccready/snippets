@@ -1,0 +1,2 @@
+#!/bin/sh
+top  -s1 -o cpu -R -F 

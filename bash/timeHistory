@@ -1,0 +1,2 @@
+#!/bin/sh
+eval exec 'perl -lne "m#: (\d+):\d+;(.+)# && printf "%s :: %s\n",scalar localtime $1,$2" $HISTFILE'

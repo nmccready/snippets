@@ -1,0 +1,19 @@
+#!/bin/sh
+TO_IMPORT=${1?need import file name!!!!}
+MYSQL_USER=${2?need user}
+MYSQL_PASSWORD=${3?need password}
+ 
+function restore() {
+    echo $1;
+    (
+        echo "SET AUTOCOMMIT=0;"
+        echo "SET UNIQUE_CHECKS=0;"
+        echo "SET FOREIGN_KEY_CHECKS=0;"
+        cat "$1.sql"
+        echo "SET FOREIGN_KEY_CHECKS=1;"
+        echo "SET UNIQUE_CHECKS=1;"
+        echo "SET AUTOCOMMIT=1;"
+        echo "COMMIT;"
+    ) | mysql -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" "$1"
+}
+restore $TO_IMPORT

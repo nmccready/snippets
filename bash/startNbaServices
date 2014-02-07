@@ -1,0 +1,38 @@
+#!/bin/sh
+CODE_BASE_HOME="$HOME""/code/github/nba"
+RAILS_APP="dashboard3.0FE"
+LOG="$CODE_BASE_HOME"/log
+mkdir -p "$LOG"
+echo '-------------------------------'
+echo "Starting RabbitMQ"
+#note to stop rabbit "partially" run "rabbitmqctl stop"
+rm -rf /usr/local/var/lib/rabbitmq/mnesia/*
+nohup rabbitmq-server >> "$LOG"/rabbitmq.log  &
+echo '-------------------------------'
+if [ -e `pgrep nginx` ];then
+  echo "Starting Nginx:"
+  nginx
+else
+  echo 'nginx already started!'
+fi
+echo '-------------------------------'
+if [ -e `pgrep mongod` ];then
+  echo "Starting MongoDB"
+  nohup mongod &
+  echo `pgrep mongod` && echo 'Mongo Success' || echo 'Mongo Fail'
+else
+  echo "MongoDB already started"
+fi
+echo '-------------------------------'
+echo "Starting Rails"
+cd "$CODE_BASE_HOME"/"$RAILS_APP"
+echo Location to execute rails is: $(pwd) - !!!!
+nohup rails s >> "$LOG"/rails_webrick.log &
+echo '-------------------------------'
+if [ -e `pgrep mysql` ];then
+  echo "Starting MySQL"
+  /usr/local/mysql/support-files/mysql.server start
+  echo `pgrep mysqld` && echo 'MySQL Success' || echo 'MySQL Fail'
+else
+  echo "mysql already started!!"
+fi

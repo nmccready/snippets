@@ -1,0 +1,3 @@
+#!/bin/sh
+extraPath=${1-}
+ls -la "$HOME"/.m2/repository/com/newbrandanalytics/"$extraPath"

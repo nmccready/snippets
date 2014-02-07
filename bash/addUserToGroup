@@ -1,0 +1,4 @@
+#!/bin/sh 
+user=${1?need user name!}
+group=${2?need group name!}
+/usr/sbin/dseditgroup -o edit -a "$user" -t user "$group" 

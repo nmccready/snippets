@@ -1,0 +1,32 @@
+#!/bin/sh
+CODE_BASE_HOME="$HOME""/code/github/nba"
+RAILS_APP="dashboard3.0FE"
+LOG="$CODE_BASE_HOME"/log
+mkdir -p "$LOG"
+echo '-------------------------------'
+echo "Killing RabbitMQ"
+#note to stop rabbit "partially" run "rabbitmqctl stop"
+rm -rf /usr/local/var/lib/rabbitmq/mnesia/*
+nohup rabbitmqctl stop  &
+echo '-------------------------------'
+if [ `pgrep nginx` ];then
+  echo "Killing Nginx:"
+  nginx -s stop
+else
+  echo 'nginx not running!'
+fi
+echo '-------------------------------'
+echo "killing MongoDB"
+mongoProc=`pgrep mongod`
+nohup kill "$mongoProc"  &
+echo '-------------------------------'
+echo "killing rails"
+proc=`ps aux | grep rails | grep -v grep |awk '{print $2}'`
+echo "rails proc: " $proc 
+nohup kill "$proc"  &
+echo '-------------------------------'
+if [ `pgrep mysql` ];then
+  echo " killing MySQL"
+  nohup /usr/local/mysql/support-files/mysql.server stop &
+  echo `pgrep mysqld` && echo 'MySQL fail' || echo 'MySQL Success'
+fi
