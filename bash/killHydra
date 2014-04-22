@@ -1,0 +1,2 @@
+#!/bin/sh
+kill -9 $(echo `ps aux | grep hydra | grep -v grep |awk '{print $2}'`)
