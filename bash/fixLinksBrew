@@ -1,0 +1,5 @@
+#!/bin/sh
+for f in `brew list`; do
+  echo $f
+  brew unlink "$f" && brew link "$f"
+done
