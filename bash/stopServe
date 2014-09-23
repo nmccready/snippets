@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+port=${1:-8000}
+kill $(./getRunningPID)

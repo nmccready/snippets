@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+pids=$(findProcs $1 'grep -v killProcs')
+
+for i in "${pids[@]}"
+do
+  echo killing $i
+  kill -9 $i
+done
