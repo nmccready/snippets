@@ -1,7 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-pids=$(findProcs $1 'grep -v killProcs')
+set -x
+
+ignorePid=$BASHPID
+echo my pid: $ignorePid
+
+pids=`findProcs $1 | grep -v "$ignorePid"`
+set +x
 
 for i in "${pids[@]}"
 do
