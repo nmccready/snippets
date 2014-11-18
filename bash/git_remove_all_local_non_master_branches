@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+#http://stackoverflow.com/questions/6127328/how-can-i-delete-all-git-branches-which-have-been-merged
+git branch -r --merged origin/master | grep -v "^.*master" | sed s:origin/:: |xargs -n 11 git branch -d
