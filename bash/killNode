@@ -1,0 +1,2 @@
+#!/bin/sh
+ps aux | grep node | grep -v grep | grep -v Atom | awk '{print }' | xargs kill -9
