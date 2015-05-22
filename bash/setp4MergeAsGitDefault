@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+chmod +x '/usr/local/bin/p4merge'
+git config --global merge.tool p4merge
+git config --global mergetool.keepTemporaries false
+git config --global mergetool.prompt false
+
