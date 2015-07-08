@@ -1,1 +1,3 @@
-/Users/nem/code/github/rmaps/rmaps-scripts/specs/cmocha
+#!/bin/bash
+set -e
+mocha --compilers coffee:coffee-script/register $@
