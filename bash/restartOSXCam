@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+sudo killall VDCAssistant
+sudo killall coreaudiod

@@ -1,0 +1,1 @@
+curl -sLI -A Darwin i386 https://hk.heroku.com/hk.gz | fgrep HTTP/
