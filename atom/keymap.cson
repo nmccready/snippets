@@ -1,0 +1,7 @@
+'.platform-darwin atom-text-editor':
+  'cmd-backspace': 'unset!'
+  'cmd-delete': 'unset!'
+  'cmd-backspace': 'editor:delete-line'
+  'cmd-delete': 'editor:delete-to-end-of-line'
+  'alt-cmd-d': 'coffeedocs:generate'
+  'ctrl-alt-l': 'editor:auto-indent'
