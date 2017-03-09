@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "dep1Proj1": "not real",
+    "dep2Proj1": "not real"
+  },
+  "peerDependencies": {
+    "peer1Proj1": "not real",
+    "peer2Proj1": "not real"
+  }
+}

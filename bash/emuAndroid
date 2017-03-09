@@ -1,2 +1,0 @@
-#!/bin/sh
-emulator -avd Nexus_5_API_22_x86 -netspeed full -netdelay none

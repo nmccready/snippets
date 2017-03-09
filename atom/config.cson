@@ -1,0 +1,231 @@
+"*":
+  _dartlang:
+    _errorsInitialized: true
+    _errorsInitialized2: true
+    _firstRun: true
+    _initialized: true
+    _initializedSymLinks: true
+    _version: "0.4.17"
+  "atom-beautify":
+    apex: {}
+    arduino: {}
+    c: {}
+    cfml: {}
+    coffeescript: {}
+    cpp: {}
+    cs: {}
+    css: {}
+    d: {}
+    ejs: {}
+    erb: {}
+    fortran: {}
+    general:
+      _analyticsUserId: "b3cf86a7-b4f4-47d6-bd12-f8accfa3995d"
+      analytics: false
+    gherkin: {}
+    handlebars: {}
+    html: {}
+    jade: {}
+    java: {}
+    js: {}
+    json: {}
+    jsx: {}
+    latex: {}
+    less: {}
+    marko: {}
+    mustache: {}
+    objectivec: {}
+    pawn: {}
+    perl: {}
+    php: {}
+    python: {}
+    riot: {}
+    ruby: {}
+    rust: {}
+    sass: {}
+    scss: {}
+    spacebars: {}
+    sql: {}
+    svg: {}
+    swig: {}
+    tss: {}
+    twig: {}
+    typescript: {}
+    vala: {}
+    visualforce: {}
+    xml: {}
+    xtemplate: {}
+  "autoclose-html": {}
+  "autocomplete-plus":
+    autoActivationDelay: 500
+    confirmCompletion: "tab"
+  "bracket-matcher": {}
+  "coffee-compile": {}
+  coffeedocs: {}
+  core:
+    allowPendingPaneItems: false
+    customFileTypes:
+      "source.ini": [
+        ".buckconfig"
+        ".hgrc"
+      ]
+      "source.json": [
+        ".arcconfig"
+        "BUCK.autodeps"
+      ]
+      "source.python": [
+        "BUCK"
+      ]
+    disabledPackages: [
+      "atom-color-highlight"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "language-gfm"
+      "markdown-preview"
+      "source-preview-babel"
+      "linter-coffee-variables"
+      "vim-mode-plus"
+    ]
+    followSymlinks: false
+    telemetryConsent: "limited"
+    themes: [
+      "seti-ui"
+      "monokai-dark"
+    ]
+  dartlang:
+    sdkLocation: "/usr/local/opt/dart/libexec"
+    sendUsage: false
+    showOutlineView: false
+  editor:
+    fontSize: 18
+    invisibles: {}
+    preferredLineLength: 125
+    showIndentGuide: true
+  "exception-reporting":
+    userId: "a8797f46-98ad-e948-49f2-3bc4637034e3"
+  "highlight-column": {}
+  "highlight-line": {}
+  jshint:
+    onlyConfig: true
+  jslint:
+    validateOnSave: false
+  linter:
+    errorPanelHeight: 25
+  "linter-coffee-variables":
+    environments: [
+      "browser"
+      "node"
+      "angular"
+      "mocha"
+      "jasmine"
+      "sinon"
+    ]
+  "linter-eslint": {}
+  "linter-jshint":
+    disableWhenNoJshintrcFileInPath: true
+  "markdown-preview-plus":
+    useGitHubStyle: true
+  metrics:
+    userId: "b4ea45a231e7f1344725c9c39d8fa922d870b933"
+  minimap:
+    adjustAbsoluteModeHeight: true
+    plugins:
+      "git-diff": true
+      "git-diffDecorationsZIndex": 0
+      pigments: true
+      pigmentsDecorationsZIndex: 0
+  nuclide:
+    "nuclide-home":
+      showHome: false
+  pigments: {}
+  preview:
+    _analyticsUserId: "f3ec6b56-1c45-4090-a69e-e6c7926490f0"
+  "recent-files":
+    updated: false
+  "spell-check": {}
+  tabs:
+    enableVcsColoring: true
+  "tree-view": {}
+  "tree-view-breadcrumb":
+    scrollbarStyle: "thin"
+  "tree-view-filter": {}
+  "vertical-tabs":
+    setToRightSide: true
+  "vim-mode":
+    startInInsertMode: true
+  "vim-mode-plus":
+    startInInsertMode: true
+  welcome:
+    showOnStartup: false
+  whitespace: {}
+".diff":
+  editor:
+    preferredLineLength: 125
+".erb.html.text":
+  editor:
+    preferredLineLength: 90
+".gradle.groovy.source":
+  editor:
+    preferredLineLength: 125
+".json.source":
+  editor:
+    preferredLineLength: 90
+".md.text":
+  editor:
+    preferredLineLength: 125
+".preview":
+  editor:
+    preferredLineLength: 90
+".ruby.source":
+  editor:
+    preferredLineLength: 90
+"tree-view":
+  hideVcsIgnoredFiles: false
