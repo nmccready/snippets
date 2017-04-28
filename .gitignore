@@ -27,7 +27,7 @@ atlassian-ide-plugin.xml
 *.rdb
 
 #OSX
-.DS_STORE 
+.DS_STORE
 *.DS_STORE
 #Sublime
 .sublime*
@@ -40,3 +40,6 @@ atlassian-ide-plugin.xml
 
 #test area not under scc
 .test*
+
+node_modules
+./**/**/node_modules

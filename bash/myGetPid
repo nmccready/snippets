@@ -1,0 +1,5 @@
+#!/bin/sh
+prog=$1
+
+#echo "ps aux | grep $prog | grep -v grep | grep -v Atom | awk '{print $2}'"
+ps aux | grep $prog | grep -v grep | grep -v Atom | grep -v myGetPid |  awk '{print $2}'
