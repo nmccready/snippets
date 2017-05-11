@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+git config --global user.email "nemtcan@gmail.com"
+git config --global user.name "nmccready"
