@@ -1,0 +1,14 @@
+#!/bin/bash
+
+##
+## Encrypt your maven password without leaving any trace in the shell history
+##
+## Carlo Sciolla skuro@skuro.tk
+## v1 - 20131205
+##
+
+MVN=`which mvn`
+OUT="pass> "
+
+read -s -p "$OUT" PASS
+mvn -ep "$PASS"

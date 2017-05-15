@@ -1,3 +1,0 @@
-#!/bin/bash
-set -e
-/Applications/IntelliJ\ IDEA\ 14.app/Contents/MacOS/idea "$@" > /dev/null 2>&1 &
