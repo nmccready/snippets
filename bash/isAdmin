@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+set -o pipefail
+
+USER=${1:-`whoami`}
+
+isAdmin() {
+  id -G $USER | grep -q -w 80
+}
+
+if isAdmin; then
+  echo Is Admin
+  exit 0;
+else
+  echo Not Admin
+  exit 1;
+fi
