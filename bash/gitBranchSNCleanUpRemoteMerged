@@ -1,0 +1,34 @@
+#!/bin/sh
+set -e
+#http://stackoverflow.com/questions/6127328/how-can-i-delete-all-git-branches-which-have-been-merged
+IGNORES=("track/*")
+FILTER_USER="nick.mccready*"
+REMOTE="origin"
+
+
+while [[ "$#" > 0 ]]; do case "$1" in
+    -n|--dry) IsDry=true;;
+    -r|--remote) REMOTE="$2"; shift;;
+    *) IGNORES+=($1);;
+  esac; shift;
+done
+
+echo IGNORES: ${IGNORES[@]}
+echo IsDry: $IsDry
+echo REMOTE: $REMOTE
+
+CMD="git branch -r --merged $REMOTE/track/sp | grep $REMOTE | grep -v \"\*\" | grep -v master | grep \"$FILTER_USER\""
+
+for i in "${IGNORES[@]}"; do
+   CMD="$CMD | grep -v $i"
+done
+
+CMD="$CMD | sed s:$REMOTE/::"
+
+if [ ${IsDry} ]; then #is unset
+  echo "Branches we could delete remotely! Locally that are merged."
+else
+  CMD="$CMD | xargs -n 1 git push --delete $REMOTE"
+fi
+
+echo "$CMD"
