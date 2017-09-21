@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+
+# Usage:
+#   rsyncParallel [--parallel=N] [rsync args...]
+#
+# Options:
+#   --parallel=N  Use N parallel processes for transfer. Defaults to 10.
+#
+# Notes:
+#   * Requires GNU Parallel
+#   * Use with ssh-keys. Lots of password prompts will get very annoying.
+#   * Does an itemize-changes first, then chunks the resulting file list and launches N parallel
+#     rsyncs to transfer a chunk each.
+#   * be a little careful with the options you pass through to rsync. Normal ones will work, you
+#     might want to test weird options upfront.
+
+if [[ "$1" == --parallel=* ]]; then
+  PARALLEL="${1##*=}"
+  shift
+else
+  PARALLEL=10
+fi
+
+if [[ "$1" == --dry-run ]]; then
+  shift
+  echo "parallel rsync -v -j $PARALLEL rsync $@"
+  rm -rf "$DEST"
+  exit 0
+fi
+
+cd $SOURCE
+echo "Using rsync options: $@"
+echo "Using up to $PARALLEL processes for transfer..."
+echo "Starting transfers..."
+
+# run it
+parallel rsync -v -j $PARALLEL rsync "$@"
+cd $ORIG_PATH

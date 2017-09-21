@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+#http://stackoverflow.com/questions/6127328/how-can-i-delete-all-git-branches-which-have-been-merged
+IGNORES=("track/sp")
+
+# usage gitBranchSNClean
+# -n or --dry for dry run (gitBranchSNCleanUpLocalMerged -n)
+# Example:
+# `gitBranchSNCleanUpLocalMerged branch1 branch2`` will ignore branch1, branch2, track/sp, and master
+
+for i in "${@}"; do
+  if [ "$i" = "-n" ] || [ $i = "--dry" ]; then
+    IsDry=true
+  else
+    IGNORES+=($i)
+  fi
+done
+
+CMD="git branch --merged | grep -v \"\*\" | grep -v master"
+
+for i in "${IGNORES[@]}"; do
+   CMD="$CMD | grep -v $i"
+done
+
+if [ ${IsDry} ]; then #is unset
+  echo "Branches we could clean! Locally that are merged."
+else
+  CMD="$CMD | xargs -n 1 git branch -d"
+fi
+
+eval "$CMD"

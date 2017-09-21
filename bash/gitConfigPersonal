@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
-git config --global user.email "nemtcan@gmail.com"
-git config --global user.name "nmccready"
+git config --local user.email "nemtcan@gmail.com"
+git config --local user.name "nmccready"
