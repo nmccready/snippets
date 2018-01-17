@@ -1,2 +1,8 @@
 #!/bin/sh
-docker logs `docker ps | grep $1 | awk '{print $1}'` "${@:2:99}"
+UNAME=$(uname)
+
+if [ UNAME == 'Darwin' ]; then
+  docker logs `docker ps | grep $1 | awk '{print $1}'` "${@:2:99}"
+else # linux
+  docker logs `docker ps | grep $1 | awk '{print $1}'`
+fi
