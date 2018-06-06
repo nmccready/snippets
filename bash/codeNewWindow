@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+#DIR=${1:-$(pwd)}
+
+cmd="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
+
+"$cmd" -n
+"$cmd" -a $@
+#"$cmd" -a "$DIR"

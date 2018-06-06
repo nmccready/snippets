@@ -1,2 +1,2 @@
 #!/bin/sh
-ps aux | grep $1 | grep -v grep | grep -v myKillAll | awk '{print $2}' | xargs kill -9 
+ps aux | grep "$1" | grep -v grep | grep -v myKillAll | awk '{print $2}' | xargs kill -9 
