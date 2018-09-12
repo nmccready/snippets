@@ -1,0 +1,5 @@
+#!/bin/sh
+#delete local tag
+git branch -D $*
+#delete origin/remote tag
+git push origin :$*

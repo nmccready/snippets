@@ -1,0 +1,3 @@
+#!/bin/sh
+set -e
+rm -rf $@ && git checkout origin/master $@ && git submodule update --init
