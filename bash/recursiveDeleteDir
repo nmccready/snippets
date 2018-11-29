@@ -1,0 +1,4 @@
+#!/bin/bash
+${1:? Dirname required}
+set -e
+find . -name '$1' -type f -delete
