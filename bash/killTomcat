@@ -1,3 +1,0 @@
-#!/bin/sh
-#kill -9 `findTomcat`
-kill -9 $(echo `ps aux | grep tomcat | grep -v grep |awk '{print $2}'`)
