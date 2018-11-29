@@ -1,4 +1,5 @@
 #!/bin/bash
-${1:? Dirname required}
+DIRNAME=${1:? Dirname required}
 set -e
-find . -name '$1' -type f -delete
+
+find . -type d -name "$DIRNAME" -exec rm -rf {} +
