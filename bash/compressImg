@@ -1,0 +1,7 @@
+#!/bin/sh
+
+COMPRESS=${1?compression arg required }
+for i in `ls *.jpg` 
+do
+  magick -quality "$COMPRESS"  "$i" "$i"
+done;

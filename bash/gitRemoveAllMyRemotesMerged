@@ -1,3 +1,5 @@
 #!/bin/sh
 #http://stackoverflow.com/questions/6127328/how-can-i-delete-all-git-branches-which-have-been-merged
-git branch -r --merged origin/master | grep -v "^.*master" | grep nmccready | sed s:origin/:: |xargs -n 1 git push --delete origin
+BRANCH=${1:-master}
+USER=${1:-nmccready}
+git branch -r --merged origin/$BRANCH | grep -v "^.*master" | grep -v "^.*$BRANCH" | grep $USER | sed s:origin/:: |xargs -n 1 git push --delete origin

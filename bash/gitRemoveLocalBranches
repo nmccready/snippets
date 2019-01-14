@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+BRANCH=${1:-master}
+# note this will attempt to delete all local branches except the one you're on and except master, and or a specified branch
+git branch --merged | grep -v "\*" | grep -v "$BRANCH" | grep -v "master"| xargs -n 1 git branch -d
