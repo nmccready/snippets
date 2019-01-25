@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+git config --local user.email "nickm@strategicmissionelements.com"
+git config --local user.name "mccready.n"
