@@ -1,0 +1,5 @@
+#!/bin/sh
+#delete local tag
+git tag -d $*
+#delete origin/remote tag
+git push javelin :$*
