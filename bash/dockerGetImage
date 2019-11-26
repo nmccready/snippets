@@ -1,0 +1,2 @@
+#!/bin/sh
+docker image ls | grep $1 | awk '{ print $3 }'

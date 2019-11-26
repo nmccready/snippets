@@ -1,3 +1,5 @@
 #!/bin/sh
 
-docker exec -it $@ sh
+shell=${2:-sh}
+
+docker exec -it $1 $shell
