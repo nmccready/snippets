@@ -1,2 +1,2 @@
 #!/bin/sh
-docker image ls | grep $1 | awk '{ print $3 }'
+docker image ls | grep $1 | awk 'FNR == 1 { print $3 }'
