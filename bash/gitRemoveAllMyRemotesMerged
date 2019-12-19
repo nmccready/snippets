@@ -1,5 +1,14 @@
 #!/bin/sh
 #http://stackoverflow.com/questions/6127328/how-can-i-delete-all-git-branches-which-have-been-merged
-BRANCH=${1:-master}
-USER=${1:-nmccready}
-git branch -r --merged origin/$BRANCH | grep -v "^.*master" | grep -v "^.*$BRANCH" | grep $USER | sed s:origin/:: |xargs -n 1 git push --delete origin
+NOT_BRANCH=master
+REMOTE=origin
+USER=nmccready
+
+while [[ "$#" > 0 ]]; do case $1 in
+  -b|--NOT_BRANCH) shift; NOT_BRANCH=$1;;
+  -r|--remote) shift; REMOTE=$1;;
+  -u|--user) shift; USER=$1;;
+  *) echo "Unknown parameter passed: $1"; exit 1;;
+esac; shift; done
+
+git branch -r --merged $REMOTE/$NOT_BRANCH | grep -v "^.*master" | grep -v "^.*$NOT_BRANCH" | grep $USER | sed s:$REMOTE/:: |xargs -n 1 git push --delete $REMOTE

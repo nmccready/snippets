@@ -1,3 +1,4 @@
 #!/bin/sh
+shell=${2:-sh}
 
-docker run -it $@ sh
+docker run -it $@ $shell
