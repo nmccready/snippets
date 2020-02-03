@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e                                      # Fail entire script if a command exits with a non-zero status
+set -o pipefail                             # Causes pipelines to produce a failure return code if any commands faili
+
+ROOT_DIR=`pwd`
+COMP_DIR="$ROOT_DIR/compressed"
+
+mkdir -p "$COMP_DIR"
+
+cp cp -v *.{jpg,png} "$COMP_DIR"
+
+cd "$COMP_DIR"
+
+mogrify -resize 60% *
+
+cd "$ROOT_DIR"

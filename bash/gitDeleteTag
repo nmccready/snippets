@@ -1,5 +1,5 @@
 #!/bin/sh
 #delete local tag
-git tag -d $*
+git tag -d "$@"
 #delete origin/remote tag
-git push origin :$*
+git push origin -d "$@"

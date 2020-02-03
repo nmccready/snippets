@@ -1,0 +1,3 @@
+#!/bin/bash
+NEXT_VERSION=$(npm version `npm version "$@" --git-tag-version=false --ignore-scripts | sed 's/\..\d*$//g'` --git-tag-version=false)
+git commit -am "version bump $NEXT_VERSION unstable without tag"
