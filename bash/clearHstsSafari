@@ -1,0 +1,8 @@
+#!/bin/sh
+
+osascript -e 'quit app "Safari"'
+sleep 2
+killall nsurlstoraged
+sleep 2
+rm -f ~/Library/Cookies/HSTS.plist
+launchctl start /System/Library/LaunchAgents/com.apple.nsurlstoraged.plist
