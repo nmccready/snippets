@@ -1,2 +1,4 @@
 #!/bin/sh
-git push $@ && git push $@ --tags
+DEST=${1:- origin}
+
+git push $1 && git push $1 --tags
