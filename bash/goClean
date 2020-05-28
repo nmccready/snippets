@@ -36,4 +36,4 @@ goclean() {
 
 (return 0 2>/dev/null) && return
 
-goclean "$@"
+goclean $@
