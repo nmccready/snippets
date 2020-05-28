@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -e
-set -o pipefail
+# set -e
+# set -o pipefail
 
 goclean() {
  local pkg=$1; shift || return 1
@@ -34,4 +34,6 @@ goclean() {
  source ~/.zshrc
 }
 
-goclean $@
+(return 0 2>/dev/null) && return
+
+goclean "$@"
