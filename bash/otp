@@ -12,7 +12,7 @@ then
     exit
 fi
 otpkey=` grep ^$1 $HOME/.otpkeys | cut -d"=" -f 2 | sed "s/ //g" `
-if [ -z $otpkey ]
+if [[ -z $otpkey ]]
 then
     echo "$scriptname: Bad Service Name"
     exit
