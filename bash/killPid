@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+PID=`ps aux | grep "$@" | grep -v grep | grep -v killPid | awk '{print $2}'`
+
+if [ -n "$PID" ];then
+ echo Killing "$PID"
+ kill -9 "$PID"
+fi
