@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+#
+# music-dedupe
+#
+# Finds duplicate songs in the macOS Music.app library, writes a reviewable
+# plan, and applies it: the losing library entries are removed and their files
+# moved to the Trash (never rm'd).
+#
+# Songs are duplicates when name + artist + album match (case, whitespace and
+# Unicode-normalization insensitive) and durations are within 2 seconds. The
+# keeper is chosen by: file exists, lossless, bit rate, favorited, rating,
+# play count, earliest date added, lowest id. Play count, rating and favorite
+# are carried from each loser to its keeper before the loser is removed.
+#
+# Usage:
+#   music-dedupe scan [--out DIR]
+#   music-dedupe apply PLAN.tsv [options]
+#
+# scan writes tracks.json and plan.tsv into DIR (default
+# ~/.cache/music-dedupe/<timestamp>) and prints a summary. Read-only.
+# Edit plan.tsv freely: apply accepts any subset of its rows.
+#
+# plan.tsv actions:
+#   trash   remove the library entry and move its file to the Trash
+#   unlink  remove the library entry only (no file, or file shared with keeper)
+#
+# Options:
+#   -o, --out DIR     scan: output directory.
+#   -n, --dry-run     apply: show what would happen; change nothing.
+#   -y, --yes         apply: skip the interactive confirmation prompt.
+#   -h, --help        Show this help.
+#
+# Exit codes: 0 ok, 1 error/aborted.
+
+set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# config / globals
+# ---------------------------------------------------------------------------
+
+# Reached through a symlinked dir (bash/ on PATH), so resolve the real path.
+SCRIPT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+readonly SCRIPT_DIR
+readonly LIB_DIR="${SCRIPT_DIR}/lib/music-dedupe"
+
+CACHE_ROOT="${HOME}/.cache/music-dedupe"
+
+COMMAND=""
+PLAN_FILE=""
+OUT_DIR=""
+DRY_RUN=false
+ASSUME_YES=false
+
+# ---------------------------------------------------------------------------
+# helpers
+# ---------------------------------------------------------------------------
+
+log()  { printf '%s\n' "$*"; }
+info() { printf '\033[36m• %s\033[0m\n' "$*"; }
+warn() { printf '\033[33m! %s\033[0m\n' "$*" >&2; }
+err()  { printf '\033[31mx %s\033[0m\n' "$*" >&2; }
+ok()   { printf '\033[32m✓ %s\033[0m\n' "$*"; }
+
+usage() {
+  sed -n '2,/^set -euo/p' "$0" | sed '$d; s/^# \{0,1\}//'
+}
+
+timestamp() { date +%Y%m%d%H%M%S; }
+
+# ---------------------------------------------------------------------------
+# argument parsing (supports flags in any order)
+# ---------------------------------------------------------------------------
+
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -o|--out)
+        [[ $# -ge 2 ]] || { err "--out needs a directory"; exit 1; }
+        OUT_DIR="$2"; shift ;;
+      -n|--dry-run) DRY_RUN=true ;;
+      -y|--yes)     ASSUME_YES=true ;;
+      -h|--help)    usage; exit 0 ;;
+      --)           shift; break ;;
+      -*)           err "Unknown option: $1"; usage; exit 1 ;;
+      *)
+        if [[ -z "$COMMAND" ]]; then
+          COMMAND="$1"
+        elif [[ "$COMMAND" == "apply" && -z "$PLAN_FILE" ]]; then
+          PLAN_FILE="$1"
+        else
+          err "Unexpected argument: $1"; usage; exit 1
+        fi ;;
+    esac
+    shift
+  done
+}
+
+require_tools() {
+  local tool
+  for tool in osascript node; do
+    command -v "$tool" >/dev/null 2>&1 || { err "Missing required tool: ${tool}"; exit 1; }
+  done
+}
+
+# ---------------------------------------------------------------------------
+# scan
+# ---------------------------------------------------------------------------
+
+cmd_scan() {
+  local dir="${OUT_DIR:-${CACHE_ROOT}/$(timestamp)}"
+  mkdir -p "$dir"
+
+  info "Reading the Music library (read-only, about 15s per 10k tracks)…"
+  osascript -l JavaScript "${LIB_DIR}/export.jxa.js" > "${dir}/tracks.json"
+
+  node "${LIB_DIR}/plan.mjs" "${dir}/tracks.json" "${dir}/plan.tsv"
+  log ""
+  ok "Plan written: ${dir}/plan.tsv"
+  log "Next: review it, then run: music-dedupe apply ${dir}/plan.tsv --dry-run"
+}
+
+# ---------------------------------------------------------------------------
+# apply
+# ---------------------------------------------------------------------------
+
+confirm() {
+  $ASSUME_YES && return 0
+  local reply
+  printf '\033[33mRemove library entries and move files to the Trash? Type "yes" to continue: \033[0m'
+  read -r reply
+  [[ "$reply" == "yes" ]]
+}
+
+print_plan_totals() {
+  awk -F'\t' 'NR > 1 && NF >= 12 {
+      n[$1]++; if ($1 == "trash") bytes += $12
+    }
+    END {
+      printf "trash rows:  %d\nunlink rows: %d\n", n["trash"], n["unlink"]
+      printf "reclaimable: %.1f MiB\n", bytes / 1048576
+    }' "$1"
+}
+
+cmd_apply() {
+  [[ -n "$PLAN_FILE" ]] || { err "apply needs PLAN.tsv"; usage; exit 1; }
+  [[ -f "$PLAN_FILE" ]] || { err "No such plan: ${PLAN_FILE}"; exit 1; }
+
+  local plan_dir plan_abs mode result_log
+  plan_dir="$(cd -P "$(dirname "$PLAN_FILE")" && pwd -P)"
+  plan_abs="${plan_dir}/$(basename "$PLAN_FILE")"
+
+  log ""
+  print_plan_totals "$plan_abs"
+  log ""
+
+  mode=apply
+  if $DRY_RUN; then
+    mode=dry
+    warn "Dry run (--dry-run): no changes made."
+  else
+    confirm || { err "Aborted by user."; exit 1; }
+  fi
+
+  result_log="${plan_dir}/apply-$(timestamp).log"
+  $DRY_RUN && result_log="${plan_dir}/apply-dryrun-$(timestamp).log"
+
+  info "Processing plan (one Music lookup per row, this can take a while)…"
+  osascript -l JavaScript "${LIB_DIR}/apply.jxa.js" "$plan_abs" "$mode" | tee "$result_log"
+
+  log ""
+  info "Summary"
+  cut -f1 "$result_log" | sort | uniq -c | sort -rn
+  log ""
+  ok "Log: ${result_log}"
+}
+
+# ---------------------------------------------------------------------------
+# main
+# ---------------------------------------------------------------------------
+
+main() {
+  parse_args "$@"
+  require_tools
+
+  case "$COMMAND" in
+    scan)  cmd_scan ;;
+    apply) cmd_apply ;;
+    "")    err "Missing command (scan|apply)"; usage; exit 1 ;;
+    *)     err "Unknown command: ${COMMAND}"; usage; exit 1 ;;
+  esac
+}
+
+# Run main only when executed directly, not when sourced.
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  main "$@"
+fi

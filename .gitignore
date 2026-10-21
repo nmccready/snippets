@@ -43,3 +43,7 @@ atlassian-ide-plugin.xml
 
 node_modules
 ./**/**/node_modules
+
+# music-dedupe scratch
+tmp/
+tmp
