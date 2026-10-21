@@ -133,3 +133,27 @@ test("tsv has a header and strips tabs and newlines from fields", () => {
   assert.ok(lines[0].startsWith("action\tloserId\tkeeperId"));
   assert.equal(lines[1].split("\t").length, 12);
 });
+
+test("copy inside the Music media folder beats a higher-quality copy elsewhere", () => {
+  const inLibrary = track({ location: "/x/Media.localized/Music/a.mp3", bitRate: 256 });
+  const outside = track({ location: "/scratch/a.mp3", bitRate: 320, dateAdded: "2019-01-01T00:00:00.000Z" });
+  const row = onlyRow([outside, inLibrary]);
+  assert.equal(row.keeperId, inLibrary.id);
+  assert.equal(row.loserId, outside.id);
+});
+
+test("two losers sharing one file trash it once", () => {
+  const keeper = track({ bitRate: 320 });
+  const a = track({ location: "/music/dup.m4a" });
+  const b = track({ location: "/music/dup.m4a" });
+  const actions = buildPlan([keeper, a, b]).rows.map((r) => r.action).sort();
+  assert.deepEqual(actions, ["trash", "unlink"]);
+});
+
+test("a file still used by a surviving track outside the set is never trashed", () => {
+  const keeper = track({ bitRate: 320 });
+  const loser = track({ location: "/music/shared.m4a" });
+  const unrelated = track({ name: "Other Song", location: "/music/shared.m4a" });
+  const row = onlyRow([keeper, loser, unrelated]);
+  assert.equal(row.action, "unlink");
+});

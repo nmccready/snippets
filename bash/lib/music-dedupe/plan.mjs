@@ -13,6 +13,9 @@ const isLossless = (t) => {
   return LOSSLESS_MARKERS.some((m) => kind.includes(m));
 };
 
+// Music.app's own media folder; a keeper elsewhere (Downloads, a scratch dir) breaks once that copy moves.
+const inMediaFolder = (t) => t.location != null && t.location.includes("/Media.localized/");
+
 const byBoolDesc = (pred) => (a, b) => Number(pred(b)) - Number(pred(a));
 const byNumDesc = (get) => (a, b) => (get(b) ?? 0) - (get(a) ?? 0);
 const byStrAsc = (get) => (a, b) => {
@@ -27,6 +30,7 @@ const byStrAsc = (get) => (a, b) => {
 // Order is the keeper policy: the first comparator that distinguishes wins.
 export const KEEPER_COMPARATORS = [
   byBoolDesc((t) => t.location != null),
+  byBoolDesc(inMediaFolder),
   byBoolDesc(isLossless),
   byNumDesc((t) => t.bitRate),
   byBoolDesc((t) => t.favorited === true),
@@ -59,10 +63,13 @@ const clusterByDuration = (group, windowSec) => {
   return clusters;
 };
 
-const rowFor = (keeper, loser) => {
-  const sharesFile = loser.location != null && loser.location === keeper.location;
+const rowFor = (keeper, loser, survivingLocations, trashed) => {
+  const keepFile = loser.location == null
+    || survivingLocations.has(loser.location)
+    || trashed.has(loser.location);
+  if (!keepFile) trashed.add(loser.location);
   return {
-    action: loser.location == null || sharesFile ? "unlink" : "trash",
+    action: keepFile ? "unlink" : "trash",
     loserId: loser.id,
     keeperId: keeper.id,
     name: loser.name,
@@ -92,16 +99,24 @@ export function buildPlan(tracks, opts = {}) {
     groups.get(key).push(t);
   }
 
-  const rows = [];
+  const pairs = [];
   let sets = 0;
   for (const group of groups.values()) {
     for (const cluster of clusterByDuration(group, windowSec)) {
       if (cluster.length < 2) continue;
       sets += 1;
       const [keeper, ...losers] = [...cluster].sort(compareKeepers);
-      for (const loser of losers) rows.push(rowFor(keeper, loser));
+      for (const loser of losers) pairs.push([keeper, loser]);
     }
   }
+
+  // A file stays on disk while any track that survives the plan, in any set, still points at it.
+  const loserIds = new Set(pairs.map(([, loser]) => loser.id));
+  const survivingLocations = new Set(
+    tracks.filter((t) => t.location != null && !loserIds.has(t.id)).map((t) => t.location),
+  );
+  const trashed = new Set();
+  const rows = pairs.map(([keeper, loser]) => rowFor(keeper, loser, survivingLocations, trashed));
 
   const trash = rows.filter((r) => r.action === "trash");
   const summary = {
