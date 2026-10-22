@@ -44,6 +44,15 @@ atlassian-ide-plugin.xml
 node_modules
 ./**/**/node_modules
 
+# sync-agents: generated delivery links and index (rerun `sync-agents sync` to rebuild)
+.agents/index/
+.agents/.sync/
+.claude/
+.windsurf/
+.cursor/
+.github/copilot/
+.github/instructions/
+
 # music-dedupe scratch
 tmp/
 tmp

@@ -1,0 +1,4 @@
+# sync-agents configuration
+# Comma-separated list of sync targets (available: claude, windsurf, cursor, copilot)
+# Override per-command with: sync-agents sync --targets claude,cursor
+targets = claude,windsurf,cursor,copilot
