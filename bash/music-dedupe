@@ -8,9 +8,10 @@
 #
 # Songs are duplicates when name + artist + album match (case, whitespace and
 # Unicode-normalization insensitive) and durations are within 2 seconds. The
-# keeper is chosen by: file exists, lossless, bit rate, favorited, rating,
-# play count, earliest date added, lowest id. Play count, rating and favorite
-# are carried from each loser to its keeper before the loser is removed.
+# keeper is chosen by: file exists, file inside the Music media folder,
+# lossless, bit rate, favorited, rating, play count, earliest date added,
+# lowest id. Play count, rating and favorite are carried from each loser to
+# its keeper before the loser is removed. See lib/music-dedupe/README.md.
 #
 # Usage:
 #   music-dedupe scan [--out DIR]
@@ -22,7 +23,8 @@
 #
 # plan.tsv actions:
 #   trash   remove the library entry and move its file to the Trash
-#   unlink  remove the library entry only (no file, or file shared with keeper)
+#   unlink  remove the library entry only (no file, or a surviving track
+#           still uses the file)
 #
 # Options:
 #   -o, --out DIR     scan: output directory.
