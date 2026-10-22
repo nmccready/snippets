@@ -56,3 +56,5 @@ node_modules
 # music-dedupe scratch
 tmp/
 tmp
+.github/instructions/sync-agents.instructions.md
+CLAUDE.md
